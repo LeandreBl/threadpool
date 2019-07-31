@@ -9,21 +9,24 @@
 
 #include <stdio.h>
 
+struct lthread_s;
+
+typedef void (*lthread_function_t)(const struct lthread_s *thread);
+
 typedef struct lthread_s {
 	pthread_t thread;
 	sem_t sem_sync;
 	sem_t sem_wait;
-	void *(*call)(void *);
-	void *data;
-	void *returned;
+	lthread_function_t call;
+	void *userdata;
 	bool is_running : 1;
-	bool is_paused : 1;
+	bool is_canceled : 1;
 } lthread_t;
 
-int lthread_create(lthread_t *thread, void *(*function)(void *), void *data);
-void lthread_set_function(lthread_t *thread, void *(*function)(void *), void *data);
+int lthread_create(lthread_t *thread, lthread_function_t function, void *userdata);
+void lthread_set_function(lthread_t *thread, lthread_function_t function, void *userdata);
 int lthread_launch(lthread_t *thread, useconds_t delay);
-int lthread_wait(lthread_t *thread, void **returned, long timeout);
+int lthread_wait(lthread_t *thread, long timeout);
 void lthread_destroy(lthread_t *thread);
 
 #endif /* !_LTHREAD_H_ */

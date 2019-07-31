@@ -1,6 +1,6 @@
 #include "lthread.h"
 
-int lthread_wait(lthread_t *thread, void **returned, long ms_timeout)
+int lthread_wait(lthread_t *thread, long ms_timeout)
 {
 	struct timespec ts = {
 		ms_timeout / 1000,
@@ -12,7 +12,5 @@ int lthread_wait(lthread_t *thread, void **returned, long ms_timeout)
 	if ((ms_timeout < 0 && sem_wait(&thread->sem_wait) == -1)
 	    || (ms_timeout > 0 && sem_timedwait(&thread->sem_wait, &ts) == -1))
 		return (-1);
-	if (returned != NULL)
-		*returned = thread->returned;
 	return (0);
 }

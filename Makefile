@@ -15,6 +15,10 @@ SRCS		= src/thread.c
 SRCS		+= src/wait.c
 SRCS		+= src/launch.c
 SRCS		+= src/set_function.c
+SRCS		+= src/pool.c
+SRCS		+= src/run.c
+SRCS		+= src/wait_all.c
+SRCS		+= src/reserve.c
 
 LIBS		= -lpthread
 
